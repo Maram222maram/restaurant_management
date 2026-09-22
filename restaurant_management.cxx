@@ -1,158 +1,182 @@
-#include<iostream>
-using namespace std;
-class A{
-public:
-	int o;
-	int w;
-	int nn;
-	int price[16] = { 0, 200, 2300, 3000, 500, 500,400,300,150,400,1000 ,800,700,400,1500,900};
-	int price_print[16];
-	int num;
-	int number_demand[1000];
-	int x = 0;
-	float total;
-	float q;
-	string food[16] = { "\t\t|  Number  |     The eater     |  Price  |", "    Boiled eggs    ","       pizza       ", "  grilled chicken  ", "     potatoes      ", "       cake        " ,"    orang juse     ","     milk tea      ","      red tea      ","    mango juice    ","     mix juice     ", "       rice        ","      milkshik     ", "       flafl       ","       prgar       ","      nodels       "};
-	string food_print[16]={"| The number |  Name of the eat  |  Quantity  | Price |"};
-	string username = "maram";
-	string u;
-	string password = "123456";
-	string p;
+#include <iostream>
+#include <string>
+#include <iomanip>
+#include <cstdlib>
 
-	void foods();
-	void output();
-	void choose();
-};
-class B : public A{
+using namespace std;
+
+class RestaurantSystem {
+protected:
+    int total_items = 0;
+    int number_demand[100] = {0};
+    int price_print[100] = {0};
+    string food_print[100];
+    
+    int price[16] = {0, 200, 2300, 3000, 500, 500, 400, 300, 150, 400, 1000, 800, 700, 400, 1500, 900};
+    string food[16] = {
+        "", "Boiled eggs", "Pizza", "Grilled chicken", "Potatoes", 
+        "Cake", "Orange juice", "Milk tea", "Red tea", "Mango juice", 
+        "Mix juice", "Rice", "Milkshake", "Falafel", "Burger", "Noodles"
+    };
+
+    string username = "maram";
+    string password = "123456";
+
 public:
-	B();
-	void swap();
+    void displayMenu();
+    void chooseOrders();
+    void printInvoice();
+    void modifyOrder();
 };
-void A::foods(){
-	int i = 0;
-	cout << "\t\t __________________________________________" << endl;
-	cout << food[0];
-	cout << endl;
-	for (int i = 1; i<16; i++){
-		cout << "\t\t __________________________________________" << endl;
-		cout << "\t\t|    " << i << "     |" << food[i] <<"|   " << price[i] <<"   |" << endl;
-	}
-	cout << "\t\t ------------------------------------------" << endl;
-	cout << endl;
+
+void RestaurantSystem::displayMenu() {
+    cout << "\n\t\t==========================================" << endl;
+    cout << "\t\t| No. |       Item Name       |  Price   |" << endl;
+    cout << "\t\t==========================================" << endl;
+    for (int i = 1; i < 16; i++) {
+        cout << "\t\t| " << setw(3) << left << i 
+             << " | " << setw(21) << left << food[i] 
+             << " | " << setw(8) << right << price[i] << " |" << endl;
+    }
+    cout << "\t\t==========================================" << endl << endl;
 }
-void A::choose(){
-	cout << "Pleas select the number of foods you want to request : ";
-	cin >> nn;
-	for (int i = 1; i <=nn; i++){
-		cout << "Choose the number of the food you want :";
-		cin >> num;
-		cout << "How many " << food[num] << " do you want :";
-		cin >> number_demand[i];
-		food_print[i] = food[num];
-		price_print[i] = price[num];
-	}
+
+void RestaurantSystem::chooseOrders() {
+    cout << "Enter the number of distinct items you want to order: ";
+    cin >> total_items;
+
+    for (int i = 1; i <= total_items; i++) {
+        int item_num;
+        cout << "\nEnter item number (" << i << "): ";
+        cin >> item_num;
+
+        while (item_num < 1  item_num > 15) {
+            cout << "Invalid item number! Please select from 1 to 15: ";
+            cin >> item_num;
+        }
+
+        cout << "Quantity for [" << food[item_num] << "]: ";
+        cin >> number_demand[i];
+
+        food_print[i] = food[item_num];
+        price_print[i] = price[item_num];
+    }
 }
-void A::output(){
-	system("cls");
-	int j=0;
-	total=0;
-	cout<<"\t\t_______________________________________________________"<<endl;
-	cout <<"\t\t"<<food_print[j] <<endl;
-	for (j = 1; j <= nn; j++){
-		q = price_print[j] * number_demand[j];
-		cout <<"\t\t|    "<< j <<"       |"<<food_print[j] << "|      " << number_demand[j] << "     |" << q <<"  |"<<endl;
-		total += q;
-	}
-	cout<<"\t\t-------------------------------------------------------"<<endl;
-	cout <<"\t\t| Number of oeders : " << j-1 << "\t Total price : " <<total<<" YER    |"<<endl;
-	cout<<"\t\t-------------------------------------------------------"<<endl;
+
+void RestaurantSystem::printInvoice() {
+    system("cls");
+    float total = 0;
+    cout << "\n\t\t=======================================================" << endl;
+    cout << "\t\t| No. |     Item Name     | Qty | Price (YER) | Total |" << endl;
+    cout << "\t\t=======================================================" << endl;
+
+    for (int j = 1; j <= total_items; j++) {
+        float subtotal = price_print[j] * number_demand[j];
+        total += subtotal;
+        cout << "\t\t| " << setw(3) << left << j 
+             << " | " << setw(17) << left << food_print[j] 
+             << " | " << setw(3) << right << number_demand[j] 
+             << " | " << setw(11) << right << price_print[j] 
+             << " | " << setw(5) << right << subtotal << " |" << endl;
+    }
+    cout << "\t\t-------------------------------------------------------" << endl;
+    cout << "\t\t Total Orders: " << total_items << " \t Total Price: " << total << " YER" << endl;
+    cout << "\t\t=======================================================" << endl;
 }
-B::B(){
-	int x = 0;
-	Q:
-	system("cls");
-	cout << "\t \t   ...[welcome in my program]... \n \n \n";
-	while (x < 5) {
-	Y:
-		cout << "     Enter username :";
-		cin >> u;
-		cout << "     Enter password:";
-		cin >> p;
-		if (username == u && password == p){
-			P:
-			system("cls");
-			foods();
-        	choose();
-        	system("cls");
-        	cout << "If you want to print the request, press the number : 1 \n"
-	                "If you want to adjust the request, press the number : 2 "<<endl;
-           	int l;
-           	int z;
-        	cin >> l;
-        	switch (l){
-        	case 1:output();
-    		break;
-        	case 2:swap();	
-    		break;
-	}
-		cout<<"If you want to enter another request press number : 1"<<endl;
-        cout<<"If you want to exit the program press number : 2"<<endl;
-	 	M:
-	    cin>>z;
-	    if (z==1)
-           goto P;
-     	else if (z==2)
-		   goto Q;
-		else {	
-		    cout<<"Wrong ! pleas press number 1 or 2"<<endl;
-		    goto M;
-}	
-		}
-		else{
-			cout << endl;
-			cout << "    wrong!\n " << endl;
-			int m;
-			cout << "If you want try again,press number 1\n";
-			cout << "If you forget the password,press number 2\n";
-			cin >> m;
-			system("cls");
-			switch (m){
-			case 1: goto Y;
-				break;
-			case 2:{
-				cout << "Eenter now username :";
-				cin >> username;
-				cout << "Eenter now password :";
-				cin >> password;
-				goto Y;
-				break;
-			}
-			}
-		}
-		x++;
-	}
+
+void RestaurantSystem::modifyOrder() {
+    system("cls");
+    cout << "\n\t\t--- Current Menu ---" << endl;
+    displayMenu();
+    cout << "\n\t\t--- Your Current Bill ---" << endl;
+    printInvoice();
+
+    int item_to_modify, new_item_num;
+    cout << "\nEnter the order line number (No.) you want to modify: ";
+    cin >> item_to_modify;
+
+    if (item_to_modify >= 1 && item_to_modify <= total_items) {
+        cout << "Select new food item number: ";
+        cin >> new_item_num;
+
+        while (new_item_num < 1  new_item_num > 15) {
+            cout << "Invalid item number! Choose between 1 and 15: ";
+            cin >> new_item_num;
+        }
+
+        cout << "Enter new quantity for [" << food[new_item_num] << "]: ";
+        cin >> number_demand[item_to_modify];
+
+        food_print[item_to_modify] = food[new_item_num];
+        price_print[item_to_modify] = price[new_item_num];
+
+        system("cls");
+        cout << "\n\t\t--- Invoice Updated Successfully ---" << endl;
+        printInvoice();
+    } else {
+        cout << "Invalid line number selected!" << endl;
+    }
 }
-void B::swap(){
-		system("cls");
-		cout<<"\t\t Food menu "<<endl;
-		foods();
-		cout<<"The food bill you want to adjust  "<<endl;
-		output();
-		cout << "Choose the order number you want to modify from the invoice" << endl;
-		cin >> o;
-		cout << "Choose the order number you want to add the invoice"<< endl;
-		cin >> w;
-		cout << "How many " << food[w] << " do you want :";
-		cin >> number_demand[w];
-		food_print[o] = food[w];
-		price_print[o] = price[w];
-		number_demand[o]=number_demand[w];
-		system("cls");
-		cout<<"\t\t The new bill"<<endl;
-		output();
-	
+class ApplicationManager : public RestaurantSystem {
+public:
+    void startSystem();
+};
+
+void ApplicationManager::startSystem() {
+    string u, p;
+    system("cls");
+    cout << "\n\t\t=================================" << endl;
+    cout << "\t\t   Welcome to Order System" << endl;
+    cout << "\t\t=================================" << endl;
+
+    bool authenticated = false;
+    while (!authenticated) {
+        cout << "\nEnter username: ";
+        cin >> u;
+        cout << "Enter password: ";
+        cin >> p;
+
+        if (username == u && password == p) {
+            authenticated = true;
+        } else {
+            cout << "\nWrong username or password!" << endl;
+            cout << "1. Try again\n2. Reset username and password\nChoice: ";
+            int choice;
+            cin >> choice;
+            if (choice == 2) {
+                cout << "Enter NEW username: ";
+                cin >> username;
+                cout << "Enter NEW password: ";
+                cin >> password;
+            }
+        }
+    }
+
+    int main_loop = 1;
+    while (main_loop == 1) {
+        system("cls");
+        displayMenu();
+        chooseOrders();
+
+        system("cls");
+        cout << "1. Print Invoice\n2. Adjust Request\nSelect option: ";
+        int option;
+        cin >> option;
+
+        if (option == 1) {
+            printInvoice();
+        } else if (option == 2) {
+            modifyOrder();
+        }
+
+        cout << "\nDo you want to enter another order?\n1. Yes (New Order)\n2. Exit System\nChoice: ";
+        cin >> main_loop;
+    }
+    cout << "\nThank you for using our system!" << endl;
 }
-int main(){
-	B w;
-	return 0;
+
+int main() {
+    ApplicationManager app;
+    app.startSystem();
+    return 0;
 }
