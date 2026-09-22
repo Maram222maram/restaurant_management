@@ -38,7 +38,7 @@ void RestaurantSystem::displayMenu() {
              << " | " << setw(21) << left << food[i] 
              << " | " << setw(8) << right << price[i] << " |" << endl;
     }
-    cout << "\t\t==========================================" << endl << endl;
+    cout << "\t\t===========================================" << endl << endl;
 }
 
 void RestaurantSystem::chooseOrders() {
